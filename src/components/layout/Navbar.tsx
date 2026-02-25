@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { Menu, X } from "lucide-react";
 
@@ -37,8 +38,21 @@ export const Navbar = () => {
     return (
         <header ref={navRef} className="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass border-b border-white/10">
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                <a href="#home" className="text-2xl font-black italic tracking-tighter text-white">
-                    F1<span className="text-f1-red">.DEV</span>
+                <a href="#home" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <div className="relative w-16 h-16 md:w-20 md:h-16">
+                        {/* Defaulting to a placeholder logo. User can drop 'logo.png' into public/ to replace */}
+                        <Image
+                            src="/logo.png"
+                            alt="F1 Logo"
+                            fill
+                            className="object-contain"
+                            onError={(e: any) => {
+                                // Fallback if logo.png is not found
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.parentElement!.innerHTML = '<span class="text-2xl font-black italic tracking-tighter text-white">F1<span class="text-f1-red">.DEV</span></span>';
+                            }}
+                        />
+                    </div>
                 </a>
 
                 {/* Desktop Nav */}

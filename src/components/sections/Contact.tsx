@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { Mail, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { Send, Github, Linkedin, Twitter } from "lucide-react";
 
 export const Contact = () => {
     const sectionRef = useRef<HTMLElement>(null);
-    const formRef = useRef<HTMLFormElement>(null);
-    const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
         gsap.fromTo(
@@ -27,20 +23,6 @@ export const Contact = () => {
             }
         );
     }, []);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setIsSuccess(true);
-            setFormData({ name: "", email: "", message: "" });
-
-            setTimeout(() => setIsSuccess(false), 5000);
-        }, 1500);
-    };
 
     return (
         <section
@@ -78,10 +60,14 @@ export const Contact = () => {
                 {/* Right Form */}
                 <div className="flex items-center justify-center">
                     <form
-                        ref={formRef}
-                        onSubmit={handleSubmit}
+                        action="https://formsubmit.co/balureddy8309@gmail.com"
+                        method="POST"
                         className="w-full glass p-8 md:p-10 rounded-3xl border border-white/10 group shadow-2xl relative overflow-hidden"
                     >
+                        {/* FormSubmit configurations */}
+                        <input type="hidden" name="_captcha" value="false" />
+                        <input type="hidden" name="_subject" value="New F1 Portfolio Message!" />
+
                         <div className="absolute top-0 right-0 w-64 h-64 bg-f1-red/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
 
                         <div className="space-y-6 relative z-10">
@@ -89,9 +75,8 @@ export const Contact = () => {
                                 <label className="block text-xs font-mono uppercase text-gray-400 tracking-widest mb-2">Driver Name</label>
                                 <input
                                     type="text"
+                                    name="name"
                                     required
-                                    value={formData.name}
-                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
                                     className="w-full bg-black/50 border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-f1-red focus:ring-1 focus:ring-f1-red transition-all"
                                     placeholder="John Doe"
                                 />
@@ -101,9 +86,8 @@ export const Contact = () => {
                                 <label className="block text-xs font-mono uppercase text-gray-400 tracking-widest mb-2">Comms Channel (Email)</label>
                                 <input
                                     type="email"
+                                    name="email"
                                     required
-                                    value={formData.email}
-                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
                                     className="w-full bg-black/50 border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-f1-red focus:ring-1 focus:ring-f1-red transition-all"
                                     placeholder="john@example.com"
                                 />
@@ -112,10 +96,9 @@ export const Contact = () => {
                             <div>
                                 <label className="block text-xs font-mono uppercase text-gray-400 tracking-widest mb-2">Message</label>
                                 <textarea
+                                    name="message"
                                     required
                                     rows={4}
-                                    value={formData.message}
-                                    onChange={e => setFormData({ ...formData, message: e.target.value })}
                                     className="w-full bg-black/50 border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-f1-red focus:ring-1 focus:ring-f1-red transition-all resize-none"
                                     placeholder="Start engine..."
                                 />
@@ -123,16 +106,9 @@ export const Contact = () => {
 
                             <button
                                 type="submit"
-                                disabled={isSubmitting}
-                                className="w-full py-4 bg-f1-red text-white font-bold italic uppercase tracking-widest rounded-lg flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full py-4 bg-f1-red text-white font-bold italic uppercase tracking-widest rounded-lg flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-colors"
                             >
-                                {isSubmitting ? (
-                                    <span className="animate-pulse">Transmitting...</span>
-                                ) : isSuccess ? (
-                                    <span className="text-green-400 flex items-center gap-2">Message Delivered</span>
-                                ) : (
-                                    <>Send Transmission <Send size={18} /></>
-                                )}
+                                Send Transmission <Send size={18} />
                             </button>
                         </div>
                     </form>
